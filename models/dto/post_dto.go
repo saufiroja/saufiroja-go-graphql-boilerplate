@@ -8,6 +8,14 @@ type FindAllPost struct {
 	UpdatedAt string `json:"updated_at"`
 }
 
+type FindPostById struct {
+	ID        string `json:"id"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}
+
 type CreatePost struct {
 	ID        string `json:"id"`
 	Title     string `json:"title"`

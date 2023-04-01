@@ -59,3 +59,18 @@ func (s *Schema) CreatePost() *graphql.Field {
 
 	return field
 }
+
+func (s *Schema) FindPostById() *graphql.Field {
+	field := &graphql.Field{
+		Type:        PostType,
+		Description: "Find post by id",
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: s.resolver.FindPostById,
+	}
+
+	return field
+}

@@ -57,3 +57,18 @@ func (r *postRepository) CreatePost(input *dto.CreatePost) error {
 
 	return nil
 }
+
+func (r *postRepository) FindPostById(id string) (dto.FindPostById, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	var post dto.FindPostById
+
+	rows := r.db.QueryRowContext(ctx, "SELECT id, title, content, created_at, updated_at FROM posts WHERE id = $1", id)
+
+	err := rows.Scan(&post.ID, &post.Title, &post.Content, &post.CreatedAt, &post.UpdatedAt)
+	if err != nil {
+		return post, err
+	}
+
+	return post, nil
+}

@@ -26,3 +26,9 @@ func (r *Resolver) CreatePost(params graphql.ResolveParams) (interface{}, error)
 
 	return input, nil
 }
+
+func (r *Resolver) FindPostById(params graphql.ResolveParams) (interface{}, error) {
+	id, _ := params.Args["id"].(string)
+
+	return r.PostService.FindPostById(id)
+}

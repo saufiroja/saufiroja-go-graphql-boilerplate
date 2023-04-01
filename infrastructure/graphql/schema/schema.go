@@ -19,7 +19,8 @@ func (s *Schema) Query() *graphql.Object {
 	return graphql.NewObject(graphql.ObjectConfig{
 		Name: "Query",
 		Fields: graphql.Fields{
-			"findAllPost": s.FindAllPost(),
+			"findAllPost":  s.FindAllPost(),
+			"findPostById": s.FindPostById(),
 		},
 	})
 }

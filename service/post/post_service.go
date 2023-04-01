@@ -33,3 +33,7 @@ func (s *PostService) CreatePost(input *dto.CreatePost) error {
 
 	return s.repo.CreatePost(data)
 }
+
+func (s *PostService) FindPostById(id string) (dto.FindPostById, error) {
+	return s.repo.FindPostById(id)
+}
