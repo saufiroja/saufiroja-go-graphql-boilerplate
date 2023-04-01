@@ -72,3 +72,17 @@ func (r *postRepository) FindPostById(id string) (dto.FindPostById, error) {
 
 	return post, nil
 }
+
+func (r *postRepository) DeletePostById(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	defer utils.Transaction(r.db)
+
+	_, err := r.db.ExecContext(ctx, "DELETE FROM posts WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

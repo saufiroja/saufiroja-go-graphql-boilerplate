@@ -74,3 +74,18 @@ func (s *Schema) FindPostById() *graphql.Field {
 
 	return field
 }
+
+func (s *Schema) DeletePostById() *graphql.Field {
+	field := &graphql.Field{
+		Type:        PostType,
+		Description: "Delete post by id",
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: s.resolver.DeletePostById,
+	}
+
+	return field
+}

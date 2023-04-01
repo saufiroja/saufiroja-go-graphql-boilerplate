@@ -37,3 +37,7 @@ func (s *PostService) CreatePost(input *dto.CreatePost) error {
 func (s *PostService) FindPostById(id string) (dto.FindPostById, error) {
 	return s.repo.FindPostById(id)
 }
+
+func (s *PostService) DeletePostById(id string) error {
+	return s.repo.DeletePostById(id)
+}

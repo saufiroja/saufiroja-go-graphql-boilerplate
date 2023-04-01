@@ -32,3 +32,14 @@ func (r *Resolver) FindPostById(params graphql.ResolveParams) (interface{}, erro
 
 	return r.PostService.FindPostById(id)
 }
+
+func (r *Resolver) DeletePostById(params graphql.ResolveParams) (interface{}, error) {
+	id, _ := params.Args["id"].(string)
+
+	err := r.PostService.DeletePostById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return id, nil
+}
