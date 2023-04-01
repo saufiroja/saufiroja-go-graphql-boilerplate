@@ -43,3 +43,22 @@ func (r *Resolver) DeletePostById(params graphql.ResolveParams) (interface{}, er
 
 	return id, nil
 }
+
+func (r *Resolver) UpdatePostById(params graphql.ResolveParams) (interface{}, error) {
+	id, _ := params.Args["id"].(string)
+	input, _ := params.Args["input"].(map[string]interface{})
+	title := input["title"].(string)
+	content := input["content"].(string)
+
+	data := &dto.UpdatePost{
+		Title:   title,
+		Content: content,
+	}
+
+	err := r.PostService.UpdatePostById(id, data)
+	if err != nil {
+		return nil, err
+	}
+
+	return input, nil
+}

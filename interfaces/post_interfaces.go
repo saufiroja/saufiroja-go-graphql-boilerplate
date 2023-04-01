@@ -7,6 +7,7 @@ type PostRepository interface {
 	FindPostById(id string) (dto.FindPostById, error)
 	CreatePost(input *dto.CreatePost) error
 	DeletePostById(id string) error
+	UpdatePostById(id string, input *dto.UpdatePost) error
 }
 
 type PostService interface {
@@ -14,4 +15,5 @@ type PostService interface {
 	CreatePost(input *dto.CreatePost) error
 	FindPostById(id string) (dto.FindPostById, error)
 	DeletePostById(id string) error
+	UpdatePostById(id string, input *dto.UpdatePost) error
 }

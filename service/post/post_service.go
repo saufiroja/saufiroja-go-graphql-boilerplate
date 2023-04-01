@@ -41,3 +41,13 @@ func (s *PostService) FindPostById(id string) (dto.FindPostById, error) {
 func (s *PostService) DeletePostById(id string) error {
 	return s.repo.DeletePostById(id)
 }
+
+func (s *PostService) UpdatePostById(id string, input *dto.UpdatePost) error {
+	data := &dto.UpdatePost{
+		Title:     input.Title,
+		Content:   input.Content,
+		UpdatedAt: time.Now().Unix(),
+	}
+
+	return s.repo.UpdatePostById(id, data)
+}

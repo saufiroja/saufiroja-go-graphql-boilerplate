@@ -89,3 +89,21 @@ func (s *Schema) DeletePostById() *graphql.Field {
 
 	return field
 }
+
+func (s *Schema) UpdatePostById() *graphql.Field {
+	field := &graphql.Field{
+		Type:        PostType,
+		Description: "Update post by id",
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"input": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(PostInputType),
+			},
+		},
+		Resolve: s.resolver.UpdatePostById,
+	}
+
+	return field
+}

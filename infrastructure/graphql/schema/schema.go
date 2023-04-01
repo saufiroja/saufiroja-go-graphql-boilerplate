@@ -31,6 +31,7 @@ func (s *Schema) Mutation() *graphql.Object {
 		Fields: graphql.Fields{
 			"createPost": s.CreatePost(),
 			"deletePost": s.DeletePostById(),
+			"updatePost": s.UpdatePostById(),
 		},
 	})
 }

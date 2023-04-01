@@ -86,3 +86,21 @@ func (r *postRepository) DeletePostById(id string) error {
 
 	return nil
 }
+
+func (r *postRepository) UpdatePostById(id string, input *dto.UpdatePost) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	defer utils.Transaction(r.db)
+
+	_, err := r.db.ExecContext(
+		ctx,
+		"UPDATE posts SET title = $1, content = $2, updated_at = $3 WHERE id = $4",
+		input.Title, input.Content, input.UpdatedAt, id,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
