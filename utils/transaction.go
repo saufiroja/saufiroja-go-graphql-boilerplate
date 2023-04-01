@@ -2,11 +2,16 @@ package utils
 
 import "database/sql"
 
-func Transaction(tx *sql.Tx) {
-	if err := recover(); err != nil {
-		tx.Rollback()
+func Transaction(db *sql.DB) {
+	tx, err := db.Begin()
+	if err != nil {
 		panic(err)
-	} else {
-		tx.Commit()
+	}
+	defer tx.Rollback()
+
+	// do something with tx
+
+	if err := tx.Commit(); err != nil {
+		panic(err)
 	}
 }

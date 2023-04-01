@@ -11,12 +11,12 @@ import (
 )
 
 type postRepository struct {
-	tx *sql.Tx
+	db *sql.DB
 }
 
-func NewPostRepository(tx *sql.Tx) interfaces.PostRepository {
+func NewPostRepository(db *sql.DB) interfaces.PostRepository {
 	return &postRepository{
-		tx: tx,
+		db: db,
 	}
 }
 
@@ -25,7 +25,7 @@ func (r *postRepository) FindAllPost() ([]dto.FindAllPost, error) {
 	defer cancel()
 	var posts []dto.FindAllPost
 
-	rows, err := r.tx.QueryContext(ctx, "SELECT id, title, content, created_at, updated_at FROM posts")
+	rows, err := r.db.QueryContext(ctx, "SELECT id, title, content, created_at, updated_at FROM posts")
 	if err != nil {
 		return nil, err
 	}
@@ -48,9 +48,9 @@ func (r *postRepository) CreatePost(input *dto.CreatePost) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	defer utils.Transaction(r.tx)
+	defer utils.Transaction(r.db)
 
-	_, err := r.tx.ExecContext(ctx, "INSERT INTO posts (id, title, content, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)", input.ID, input.Title, input.Content, input.CreatedAt, input.UpdatedAt)
+	_, err := r.db.ExecContext(ctx, "INSERT INTO posts (id, title, content, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)", input.ID, input.Title, input.Content, input.CreatedAt, input.UpdatedAt)
 	if err != nil {
 		return err
 	}

@@ -10,7 +10,7 @@ import (
 	"github.com/saufiroja/go-graphql-boilerplate/config"
 )
 
-func NewPostgres(conf *config.AppConfig) *sql.Tx {
+func NewPostgres(conf *config.AppConfig) *sql.DB {
 	host := conf.Postgres.DBHost
 	port := conf.Postgres.DBPort
 	user := conf.Postgres.DBUser
@@ -24,11 +24,6 @@ func NewPostgres(conf *config.AppConfig) *sql.Tx {
 		panic(err)
 	}
 
-	tx, err := db.Begin()
-	if err != nil {
-		panic(err)
-	}
-
 	// connection pool
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
@@ -37,5 +32,5 @@ func NewPostgres(conf *config.AppConfig) *sql.Tx {
 
 	log.Println("Connected to Postgres")
 
-	return tx
+	return db
 }
