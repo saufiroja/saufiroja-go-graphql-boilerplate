@@ -14,14 +14,19 @@ import (
 func NewHandler(app *fiber.App, conf *config.AppConfig) *handler.Handler {
 	db := postgres.NewPostgres(conf)
 
+	// repository
 	postRepo := repoPost.NewPostRepository(db)
 
+	// service
 	postService := svcPost.NewPostService(postRepo)
 
+	// resolver
 	resolver := resolver.NewResolver(postService)
 
+	// schema
 	schema := schema.NewSchema(resolver)
 
+	// graphql handler
 	gh := handler.New(&handler.Config{
 		Schema:   schema.RootSchema(),
 		Pretty:   true,

@@ -6,10 +6,15 @@ type Post {
   updated_at: Int!
 }
 
+input PostInput {
+  title: String!
+  content: String!
+}
+
 type Query {
   findAllPost: [Post]
 }
 
 type Mutation {
-  createPost(title: String!, content: String!): Post
+  createPost(input: PostInput): Post
 }

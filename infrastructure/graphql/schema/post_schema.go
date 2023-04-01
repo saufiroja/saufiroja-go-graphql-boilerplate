@@ -23,6 +23,18 @@ var PostType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var PostInputType = graphql.NewInputObject(graphql.InputObjectConfig{
+	Name: "PostInput",
+	Fields: graphql.InputObjectConfigFieldMap{
+		"title": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
+		"content": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
+	},
+})
+
 func (s *Schema) FindAllPost() *graphql.Field {
 	field := &graphql.Field{
 		Type:        graphql.NewList(PostType),
@@ -38,11 +50,8 @@ func (s *Schema) CreatePost() *graphql.Field {
 		Type:        PostType,
 		Description: "Create post",
 		Args: graphql.FieldConfigArgument{
-			"title": &graphql.ArgumentConfig{
-				Type: graphql.NewNonNull(graphql.String),
-			},
-			"content": &graphql.ArgumentConfig{
-				Type: graphql.NewNonNull(graphql.String),
+			"input": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(PostInputType),
 			},
 		},
 		Resolve: s.resolver.CreatePost,

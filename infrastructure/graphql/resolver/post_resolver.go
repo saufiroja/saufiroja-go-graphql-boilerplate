@@ -10,12 +10,16 @@ func (r *Resolver) FindAllPost(params graphql.ResolveParams) (interface{}, error
 }
 
 func (r *Resolver) CreatePost(params graphql.ResolveParams) (interface{}, error) {
-	input := &dto.CreatePost{
-		Title:   params.Args["title"].(string),
-		Content: params.Args["content"].(string),
+	input, _ := params.Args["input"].(map[string]interface{})
+	title := input["title"].(string)
+	content := input["content"].(string)
+
+	data := &dto.CreatePost{
+		Title:   title,
+		Content: content,
 	}
 
-	err := r.PostService.CreatePost(input)
+	err := r.PostService.CreatePost(data)
 	if err != nil {
 		return nil, err
 	}

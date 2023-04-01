@@ -24,6 +24,12 @@ func NewPostgres(conf *config.AppConfig) *sql.DB {
 		panic(err)
 	}
 
+	// ping to check connection
+	err = db.Ping()
+	if err != nil {
+		log.Println("Failed to connect to Postgres")
+	}
+
 	// connection pool
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
