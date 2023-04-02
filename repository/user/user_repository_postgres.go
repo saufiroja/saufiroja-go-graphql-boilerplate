@@ -3,7 +3,6 @@ package user
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"time"
 
 	"github.com/saufiroja/go-graphql-boilerplate/interfaces"
@@ -64,9 +63,7 @@ func (r *userRepository) DeleteUserById(id string) error {
 
 	defer utils.Transaction(r.db)
 
-	fmt.Println(id)
 	_, err := r.db.ExecContext(ctx, "DELETE FROM users WHERE id = $1", id)
-	fmt.Println(err)
 	if err != nil {
 		return err
 	}
