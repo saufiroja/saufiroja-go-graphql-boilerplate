@@ -1,7 +1,7 @@
 run:
-	go run main.go
+	go run app/main.go
 
-migration:
+migration: 
 	migrate create -ext sql -dir model/migration -seq $(name)
 
 migrate-up:
