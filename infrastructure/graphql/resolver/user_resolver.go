@@ -35,3 +35,41 @@ func (r *Resolver) Login(params graphql.ResolveParams) (interface{}, error) {
 
 	return token, nil
 }
+
+func (r *Resolver) FindUserById(params graphql.ResolveParams) (interface{}, error) {
+	id := params.Args["id"].(string)
+
+	user, err := r.UserService.FindUserById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (r *Resolver) UpdateUserById(params graphql.ResolveParams) (interface{}, error) {
+	id := params.Args["id"].(string)
+	input := params.Args["input"].(map[string]interface{})
+	user := &dto.UpdateUserById{
+		Name:  input["name"].(string),
+		Email: input["email"].(string),
+	}
+
+	err := r.UserService.UpdateUserById(id, user)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (r *Resolver) DeleteUserById(params graphql.ResolveParams) (interface{}, error) {
+	id := params.Args["id"].(string)
+
+	err := r.UserService.DeleteUserById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return id, nil
+}

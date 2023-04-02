@@ -38,6 +38,18 @@ var LoginType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var UpdateUserInput = graphql.NewInputObject(graphql.InputObjectConfig{
+	Name: "UpdateUserInput",
+	Fields: graphql.InputObjectConfigFieldMap{
+		"name": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
+		"email": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
+	},
+})
+
 var UserTypeInput = graphql.NewInputObject(graphql.InputObjectConfig{
 	Name: "UserInput",
 	Fields: graphql.InputObjectConfigFieldMap{
@@ -90,6 +102,54 @@ func (s *Schema) Login() *graphql.Field {
 			},
 		},
 		Resolve: s.resolver.Login,
+	}
+
+	return field
+}
+
+func (s *Schema) FindUserById() *graphql.Field {
+	field := &graphql.Field{
+		Type:        UserType,
+		Description: "Find user by id",
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: s.resolver.FindUserById,
+	}
+
+	return field
+}
+
+func (s *Schema) UpdateUserById() *graphql.Field {
+	field := &graphql.Field{
+		Type:        UserType,
+		Description: "Update user by id",
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+			"input": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(UpdateUserInput),
+			},
+		},
+		Resolve: s.resolver.UpdateUserById,
+	}
+
+	return field
+}
+
+func (s *Schema) DeleteUserById() *graphql.Field {
+	field := &graphql.Field{
+		Type:        UserType,
+		Description: "Delete user by id",
+		Args: graphql.FieldConfigArgument{
+			"id": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(graphql.String),
+			},
+		},
+		Resolve: s.resolver.DeleteUserById,
 	}
 
 	return field

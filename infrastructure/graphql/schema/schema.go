@@ -21,6 +21,7 @@ func (s *Schema) Query() *graphql.Object {
 		Fields: graphql.Fields{
 			"findAllPost":  s.FindAllPost(),
 			"findPostById": s.FindPostById(),
+			"findUserById": s.FindUserById(),
 		},
 	})
 }
@@ -35,8 +36,10 @@ func (s *Schema) Mutation() *graphql.Object {
 			"updatePost": s.UpdatePostById(),
 
 			// user
-			"register": s.Register(),
-			"login":    s.Login(),
+			"register":       s.Register(),
+			"login":          s.Login(),
+			"updateUserById": s.UpdateUserById(),
+			"deleteUserById": s.DeleteUserById(),
 		},
 	})
 }

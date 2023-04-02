@@ -9,8 +9,10 @@ import (
 	"github.com/saufiroja/go-graphql-boilerplate/infrastructure/graphql/schema"
 	repoAuth "github.com/saufiroja/go-graphql-boilerplate/repository/auth"
 	repoPost "github.com/saufiroja/go-graphql-boilerplate/repository/post"
+	repoUser "github.com/saufiroja/go-graphql-boilerplate/repository/user"
 	svcAuth "github.com/saufiroja/go-graphql-boilerplate/service/auth"
 	svcPost "github.com/saufiroja/go-graphql-boilerplate/service/post"
+	svcUser "github.com/saufiroja/go-graphql-boilerplate/service/user"
 )
 
 func NewHandler(app *fiber.App, conf *config.AppConfig) *handler.Handler {
@@ -19,15 +21,18 @@ func NewHandler(app *fiber.App, conf *config.AppConfig) *handler.Handler {
 	// repository
 	postRepo := repoPost.NewPostRepository(db)
 	authRepo := repoAuth.NewAuthRepository(db)
+	userRepo := repoUser.NewUserRepository(db)
 
 	// service
 	postService := svcPost.NewPostService(postRepo)
 	authService := svcAuth.NewAuthService(authRepo)
+	userService := svcUser.NewUserService(userRepo)
 
 	// resolver
 	resolver := resolver.NewResolver(
 		postService,
 		authService,
+		userService,
 	)
 
 	// schema

@@ -23,7 +23,18 @@ input LoginInput {
   password: String!
 }
 
+input UpdateUserInput {
+  name: String!
+  email: String!
+}
+
+type Query {
+  findUserById(id: ID!): User!
+}
+
 type Mutation {
   register(input: UserInput!): User!
   login(input: LoginInput!): loginResponse!
+  updateUserById(id: ID!, input: UpdateUserInput!): User!
+  deleteUserById(id: ID!): User!
 }

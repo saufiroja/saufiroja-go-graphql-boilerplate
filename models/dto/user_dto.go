@@ -18,3 +18,16 @@ type Token struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
+
+type FindUserById struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	CreatedAt int64  `json:"created_at"`
+}
+
+type UpdateUserById struct {
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	UpdatedAt int64  `json:"updated_at"`
+}
