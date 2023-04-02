@@ -36,3 +36,32 @@ func (s *authService) Register(input *dto.Register) error {
 
 	return s.repo.Register(data)
 }
+
+func (s *authService) Login(input *dto.Login) (*dto.Token, error) {
+	user, err := s.repo.Login(input)
+	if err != nil {
+		return nil, err
+	}
+
+	err = utils.ComparePassword(user.Password, input.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	accessToken, err := utils.GenerateAccessToken(user.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	refreshToken, err := utils.GenerateRefreshToken(user.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	token := &dto.Token{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+
+	return token, nil
+}

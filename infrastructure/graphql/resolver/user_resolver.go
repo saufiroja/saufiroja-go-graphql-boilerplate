@@ -20,3 +20,18 @@ func (r *Resolver) Register(params graphql.ResolveParams) (interface{}, error) {
 
 	return user, nil
 }
+
+func (r *Resolver) Login(params graphql.ResolveParams) (interface{}, error) {
+	input := params.Args["input"].(map[string]interface{})
+	user := &dto.Login{
+		Email:    input["email"].(string),
+		Password: input["password"].(string),
+	}
+
+	token, err := r.AuthService.Login(user)
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
+}

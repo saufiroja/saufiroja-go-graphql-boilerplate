@@ -38,3 +38,22 @@ func (r *authRepository) Register(input *dto.Register) error {
 
 	return nil
 }
+
+func (r *authRepository) Login(input *dto.Login) (dto.Login, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var user dto.Login
+
+	err := r.db.QueryRowContext(
+		ctx,
+		"SELECT email, password FROM users WHERE email = $1",
+		input.Email,
+	).Scan(&user.Email, &user.Password)
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}

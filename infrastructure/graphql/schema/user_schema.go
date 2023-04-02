@@ -26,12 +26,36 @@ var UserType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var LoginType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Login",
+	Fields: graphql.Fields{
+		"access_token": &graphql.Field{
+			Type: graphql.String,
+		},
+		"refresh_token": &graphql.Field{
+			Type: graphql.String,
+		},
+	},
+})
+
 var UserTypeInput = graphql.NewInputObject(graphql.InputObjectConfig{
 	Name: "UserInput",
 	Fields: graphql.InputObjectConfigFieldMap{
 		"name": &graphql.InputObjectFieldConfig{
 			Type: graphql.NewNonNull(graphql.String),
 		},
+		"email": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
+		"password": &graphql.InputObjectFieldConfig{
+			Type: graphql.NewNonNull(graphql.String),
+		},
+	},
+})
+
+var LoginTypeInput = graphql.NewInputObject(graphql.InputObjectConfig{
+	Name: "LoginInput",
+	Fields: graphql.InputObjectConfigFieldMap{
 		"email": &graphql.InputObjectFieldConfig{
 			Type: graphql.NewNonNull(graphql.String),
 		},
@@ -51,6 +75,21 @@ func (s *Schema) Register() *graphql.Field {
 			},
 		},
 		Resolve: s.resolver.Register,
+	}
+
+	return field
+}
+
+func (s *Schema) Login() *graphql.Field {
+	field := &graphql.Field{
+		Type:        LoginType,
+		Description: "Login user",
+		Args: graphql.FieldConfigArgument{
+			"input": &graphql.ArgumentConfig{
+				Type: graphql.NewNonNull(LoginTypeInput),
+			},
+		},
+		Resolve: s.resolver.Login,
 	}
 
 	return field

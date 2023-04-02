@@ -7,12 +7,23 @@ type User {
   updatedAt: Int
 }
 
+type loginResponse {
+  access_token: String!
+  refresh_token: String!
+}
+
 input UserInput {
   name: String!
   email: String!
   password: String!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   register(input: UserInput!): User!
+  login(input: LoginInput!): loginResponse!
 }

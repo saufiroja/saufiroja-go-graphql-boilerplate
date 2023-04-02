@@ -17,8 +17,9 @@ func NewServer() *fiber.App {
 	// middlewares
 	app.Use(middlewares.Logger(app))
 	app.Use(middlewares.Limiters(app))
+	// // auth middleware
+	// app.Use(middlewares.AuthMiddleware)
 
-	// graphql handler
 	gh := handler.NewHandler(app, conf)
 
 	// graphql endpoint

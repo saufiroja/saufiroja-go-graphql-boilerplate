@@ -36,6 +36,7 @@ func (s *Schema) Mutation() *graphql.Object {
 
 			// user
 			"register": s.Register(),
+			"login":    s.Login(),
 		},
 	})
 }

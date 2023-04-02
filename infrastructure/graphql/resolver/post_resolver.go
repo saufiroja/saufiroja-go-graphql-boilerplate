@@ -1,11 +1,16 @@
 package resolver
 
 import (
+	"fmt"
+
 	"github.com/graphql-go/graphql"
 	"github.com/saufiroja/go-graphql-boilerplate/models/dto"
+	"github.com/saufiroja/go-graphql-boilerplate/utils"
 )
 
 func (r *Resolver) FindAllPost(params graphql.ResolveParams) (interface{}, error) {
+	token := params.Context.Value("email").(utils.Token)
+	fmt.Println(token)
 	return r.PostService.FindAllPost()
 }
 
