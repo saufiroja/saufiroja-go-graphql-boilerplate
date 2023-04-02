@@ -10,6 +10,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.7
 	github.com/valyala/fasthttp v1.45.0
+	golang.org/x/crypto v0.7.0
 	golang.org/x/text v0.8.0
 )
 

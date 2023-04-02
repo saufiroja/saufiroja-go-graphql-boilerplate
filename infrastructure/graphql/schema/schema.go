@@ -29,9 +29,13 @@ func (s *Schema) Mutation() *graphql.Object {
 	return graphql.NewObject(graphql.ObjectConfig{
 		Name: "Mutation",
 		Fields: graphql.Fields{
+			// post
 			"createPost": s.CreatePost(),
 			"deletePost": s.DeletePostById(),
 			"updatePost": s.UpdatePostById(),
+
+			// user
+			"register": s.Register(),
 		},
 	})
 }
