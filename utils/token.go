@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"time"
+
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -14,7 +16,7 @@ func GenerateAccessToken(email string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["email"] = email
-	claims["exp"] = 7200
+	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte("secret"))
@@ -24,7 +26,7 @@ func GenerateRefreshToken(email string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["email"] = email
-	claims["exp"] = 86400
+	claims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte("secret"))

@@ -1,53 +1,34 @@
 package middlewares
 
 import (
-	"fmt"
+	"context"
+	"net/http"
+	"strings"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/saufiroja/go-graphql-boilerplate/utils"
 )
 
-func AuthMiddleware(c *fiber.Ctx) error {
-	// get token from header
-	tokenString := c.Get("Authorization")
-	fmt.Println(tokenString)
-	if tokenString == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"code":    401,
-			"message": "Unauthorized",
-		})
-	}
+func AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		authorization := r.Header.Get("Authorization")
 
-	// validate token
-	token, err := utils.ValidateToken(tokenString)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"code":    401,
-			"message": "Unauthorized",
-		})
-	}
+		if authorization == "" {
+			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
+			return
+		}
 
-	// get claims
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"code":    401,
-			"message": "Unauthorized",
-		})
-	}
+		token := strings.Split(authorization, "Bearer ")[1]
 
-	// get email from claims
-	email, ok := claims["email"].(string)
-	if !ok {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"code":    401,
-			"message": "Unauthorized",
-		})
-	}
+		res, err := utils.ValidateToken(token)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
 
-	// set email to context
-	c.Locals("email", email)
+		ctx := r.Context()
+		ctx = context.WithValue(ctx, "email", res)
+		r = r.WithContext(ctx)
 
-	return c.Next()
+		next.ServeHTTP(w, r)
+	})
 }

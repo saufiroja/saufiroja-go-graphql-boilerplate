@@ -1,6 +1,7 @@
 package resolver
 
 import (
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/graphql-go/graphql"
 	"github.com/saufiroja/go-graphql-boilerplate/models/dto"
 )
@@ -37,6 +38,8 @@ func (r *Resolver) Login(params graphql.ResolveParams) (interface{}, error) {
 }
 
 func (r *Resolver) FindUserById(params graphql.ResolveParams) (interface{}, error) {
+	_ = params.Context.Value("email").(*jwt.Token)
+
 	id := params.Args["id"].(string)
 
 	user, err := r.UserService.FindUserById(id)
@@ -48,6 +51,8 @@ func (r *Resolver) FindUserById(params graphql.ResolveParams) (interface{}, erro
 }
 
 func (r *Resolver) UpdateUserById(params graphql.ResolveParams) (interface{}, error) {
+	_ = params.Context.Value("email").(*jwt.Token)
+
 	id := params.Args["id"].(string)
 	input := params.Args["input"].(map[string]interface{})
 	user := &dto.UpdateUserById{
@@ -64,6 +69,8 @@ func (r *Resolver) UpdateUserById(params graphql.ResolveParams) (interface{}, er
 }
 
 func (r *Resolver) DeleteUserById(params graphql.ResolveParams) (interface{}, error) {
+	_ = params.Context.Value("email").(*jwt.Token)
+
 	id := params.Args["id"].(string)
 
 	err := r.UserService.DeleteUserById(id)
