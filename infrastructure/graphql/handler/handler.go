@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"github.com/graphql-go/handler"
 	"github.com/saufiroja/go-graphql-boilerplate/config"
 	"github.com/saufiroja/go-graphql-boilerplate/infrastructure/database/postgres"
@@ -15,7 +14,7 @@ import (
 	svcUser "github.com/saufiroja/go-graphql-boilerplate/service/user"
 )
 
-func NewHandler(app *fiber.App, conf *config.AppConfig) *handler.Handler {
+func NewHandler(conf *config.AppConfig) *handler.Handler {
 	db := postgres.NewPostgres(conf)
 
 	// repository
